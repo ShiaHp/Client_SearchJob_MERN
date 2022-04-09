@@ -1,8 +1,9 @@
 import React from 'react'
 import logo from '../assets/images/logo.svg'
-import main from '../assets/images/main.svg'
+import main1 from '../assets/images/main1.svg'
 import styled from 'styled-components'
 import Wrapper from '../assets/wrappers/Testing'
+import Logo from "../components/logo"
 const Landing = () => {
   return (
       <Wrapper>
@@ -27,7 +28,7 @@ const Landing = () => {
             <button className="btn btn-hero">Login/Register</button>
         </div>
         {/*  */}
-        <img src={main} alt="job hunt" className="img main-img" />
+        <img src={main1} alt="job hunt" className="img main-img" />
     </div>
     </main>
     </Wrapper>
