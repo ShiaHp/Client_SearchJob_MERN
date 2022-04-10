@@ -3,31 +3,38 @@ import {useState,useEffect} from 'react';
 import logo from '../assets/images/logo.svg';
 import Wrapper from '../assets/wrappers/RegisterPage'
 import { Logo, FormRow,Alert } from '../components'
+import {useAppContext} from '../context/appContext';
 
 const initialState ={
   name: '',
   email: '',
   password: '',
   isMember: true,
-  showAlert: true
 }
 const Register = () => {
   const [values,setValues] = useState(initialState);
-  
   // global state 
 
+  const {isLoading,showAlert, displayAlert} = useAppContext();
+ 
 
 
   const toggleMember = () =>{
     setValues({...values,isMember:!values.isMember})
+    // true or false
   }
   const handleChange = (event) => {
-    console.log(event.target)
+    setValues({...values,[event.target.name]: event.target.value})
   }
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target)
+    const {name,email,password,isMember} = values;
+    if(!email || !password || (!isMember && !name)) {
+      displayAlert();
+      return;
+    }
+    console.log(values)
   }
   
   return (
@@ -35,6 +42,7 @@ const Register = () => {
       <form className="form"onSubmit={onSubmit} >
         <img src={logo} alt="logo" />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
+        {showAlert && <Alert/>}
         {!values.isMember && (
            <FormRow
            type='text'
@@ -65,7 +73,7 @@ const Register = () => {
           submit
         </button>
    <p>
-          {values.isMember ? "Not a member yet" : "Already a member?"}
+          {values.isMember ? "Not a member yet?" : "Already a member?"}
      <button type="button" onClick={toggleMember} className="member-btn">
           {values.isMember ? 'Register' : 'Login'}
 
