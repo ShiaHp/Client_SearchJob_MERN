@@ -3,7 +3,11 @@ import reducer from './reducer';
 import { DISPLAY_ALERT , CLEAR_ALERT , 
     REGISTER_USER_BEGIN,
     REGISTER_USER_SUCCESS,
-    REGISTER_USER_ERROR} from './action';
+    REGISTER_USER_ERROR,
+    LOGIN_USER_BEGIN,
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_ERROR
+} from './action';
 import axios from 'axios'
 
 // có thể dùng trong trường hợp user reload lại page thì có thể load lại info
@@ -79,7 +83,30 @@ const registerUser = async (currentUser)=>{
     clearAlert()
 }
 
-    return <AppContext.Provider value={{...state,displayAlert,registerUser}}>{children}</AppContext.Provider>
+    const loginUser = async (currentUser)=>{
+        dispatch({type : LOGIN_USER_BEGIN})
+    try{
+        const {data} = await axios.post('/api/v1/auth/login',currentUser);
+        
+        const { user,token,location} = data
+   
+        dispatch({type : LOGIN_USER_SUCCESS,
+             payload : {
+            user,token,location 
+        }})
+        addUserToLocalStorage({user,token,location})
+        // local storage
+    } catch(e){
+ 
+        dispatch({type : LOGIN_USER_ERROR , payload : {
+            msg : e.response.data.msg 
+        }})
+      
+    }
+    clearAlert()
+    }
+
+    return <AppContext.Provider value={{...state,displayAlert,registerUser,loginUser}}>{children}</AppContext.Provider>
 
 }
 
