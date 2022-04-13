@@ -97,7 +97,7 @@ const registerUser = async (currentUser)=>{
         addUserToLocalStorage({user,token,location})
         // local storage
     } catch(e){
- 
+     
         dispatch({type : LOGIN_USER_ERROR , payload : {
             msg : e.response.data.msg 
         }})
