@@ -24,7 +24,7 @@ const AppContext = React.createContext();
 
 const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,initialState)
-    // test
+    // test 
     const displayAlert = ()=>{
         dispatch({type : DISPLAY_ALERT})
         clearAlert()
@@ -38,12 +38,12 @@ const AppProvider = ({children}) =>{
 
 const registerUser = async (currentUser)=>{
     dispatch({type : REGISTER_USER_BEGIN})
-    // something
     try{
         const response = await axios.post('/api/v1/auth/register',currentUser);
         console.log(response);
         const { user,token,location} = response.data
-        dispatch({type : REGISTER_USER_SUCCESS, payload : {
+        dispatch({type : REGISTER_USER_SUCCESS,
+             payload : {
             user,token,location 
         }})
         // local storage

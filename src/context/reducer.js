@@ -21,8 +21,9 @@
             return {...state,isLoading : true,alertType : '',alertText : ''}
         }
         if(action.type === REGISTER_USER_SUCCESS){
-            return {...state,isLoading : false
-                ,token : action.payload.token,
+            return {...state,
+                isLoading : false,
+                token : action.payload.token,
                 user : action.payload.user,
                 userLocation : action.payload.location, jobLocation : action.payload.location,
                 showAlert : true,

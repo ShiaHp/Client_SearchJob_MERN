@@ -4,7 +4,7 @@ import logo from '../assets/images/logo.svg';
 import Wrapper from '../assets/wrappers/RegisterPage'
 import { Logo, FormRow,Alert } from '../components'
 import {useAppContext} from '../context/appContext';
-
+import {useNavigate} from 'react-router-dom'
 const initialState ={
   name: '',
   email: '',
@@ -12,11 +12,10 @@ const initialState ={
   isMember: true,
 }
 const Register = () => {
+  const navigate = useNavigate()
   const [values,setValues] = useState(initialState);
+  const {user,isLoading,showAlert, displayAlert,registerUser} = useAppContext();
   // global state 
-
-  const {isLoading,showAlert, displayAlert,registerUser} = useAppContext();
- 
 
 
   const toggleMember = () =>{
@@ -45,6 +44,16 @@ const Register = () => {
     
   }
   
+
+  useEffect(() =>{
+    if(user){
+      setTimeout(() =>{
+        navigate('/')
+      },3000)
+     
+    }
+  },[user,navigate])
+  // mỗi lần user hoặc navigate thay đổi
   return (
     <Wrapper className="full-page">
       <form className="form"onSubmit={onSubmit} >
