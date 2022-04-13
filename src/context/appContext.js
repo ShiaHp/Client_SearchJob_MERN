@@ -6,7 +6,9 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     REGISTER_USER_ERROR,
     LOGIN_USER_BEGIN,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_ERROR
+    LOGIN_USER_ERROR,
+    TOGGLE_SIDEBAR,
+    LOGOUT_USER
 } from './action';
 import axios from 'axios'
 
@@ -26,6 +28,7 @@ const initialState = {
     jobLocation :userLocation || '',
     user : user? JSON.parse(user) : null,
     token : token,
+    showSidebar : false
 
 
 }
@@ -105,8 +108,22 @@ const registerUser = async (currentUser)=>{
     }
     clearAlert()
     }
+const toggleSideBar =() =>{
+    dispatch({type :  TOGGLE_SIDEBAR })
+}
 
-    return <AppContext.Provider value={{...state,displayAlert,registerUser,loginUser}}>{children}</AppContext.Provider>
+    const logoutUser = () =>{
+        dispatch({type :     LOGOUT_USER    });
+        removeUserFromLocalStorage();
+
+    }
+    return <AppContext.Provider value={{...state
+        ,displayAlert,
+        registerUser
+        ,loginUser, 
+        toggleSideBar,
+        logoutUser
+    }}>{children}</AppContext.Provider>
 
 }
 
