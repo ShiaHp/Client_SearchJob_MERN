@@ -15,7 +15,7 @@ const Register = () => {
   const [values,setValues] = useState(initialState);
   // global state 
 
-  const {isLoading,showAlert, displayAlert} = useAppContext();
+  const {isLoading,showAlert, displayAlert,registerUser} = useAppContext();
  
 
 
@@ -27,6 +27,7 @@ const Register = () => {
     setValues({...values,[event.target.name]: event.target.value})
   }
 
+  
   const onSubmit = (e) => {
     e.preventDefault();
     const {name,email,password,isMember} = values;
@@ -34,7 +35,14 @@ const Register = () => {
       displayAlert();
       return;
     }
-    console.log(values)
+    const currentUser = {name,email,password};
+
+    if(isMember) {
+      console.log('Already a member')
+    } else{
+      registerUser(currentUser);
+    }
+    
   }
   
   return (
@@ -69,7 +77,7 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type='submit' className='btn btn-block'>
+        <button type='submit' className='btn btn-block' disabled={isLoading}>
           submit
         </button>
    <p>
