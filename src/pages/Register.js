@@ -70,8 +70,6 @@ const Register = () => {
         )}
         {/* input */}
        
-  
-
         {/* email input */}
         <FormRow
           type='email'
