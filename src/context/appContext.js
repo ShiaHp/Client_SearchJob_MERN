@@ -8,7 +8,10 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_ERROR,
     TOGGLE_SIDEBAR,
-    LOGOUT_USER
+    LOGOUT_USER,
+    UPDATE_USER_BEGIN ,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_ERROR
 } from './action';
 import axios from 'axios'
 
@@ -39,6 +42,31 @@ const AppContext = React.createContext();
 const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,initialState)
     // test 
+
+
+//    axios
+    const autoFetch = axios.create({
+        baseURL : '/api/v1',
+    })
+    // request 
+    autoFetch.interceptors.request.use((config)=>{
+        config.headers.common['Authorization'] =`Bearer ${state.token}`;
+        return config
+    },(err)=>{
+        return Promise.reject(err)
+    })
+
+      // response
+      autoFetch.interceptors.response.use((response)=>{
+        return response
+    },(err)=>{
+
+        if(err.response.status === 401){
+            logoutUser()
+        }
+        return Promise.reject(err)
+    })
+
     const displayAlert = ()=>{
         dispatch({type : DISPLAY_ALERT})
         clearAlert()
@@ -112,17 +140,35 @@ const toggleSideBar =() =>{
     dispatch({type :  TOGGLE_SIDEBAR })
 }
 
-    const logoutUser = () =>{
+const logoutUser = () =>{
         dispatch({type :     LOGOUT_USER    });
         removeUserFromLocalStorage();
+    }   
+const updateUser = async (currentUser) =>{
 
+        dispatch({type : UPDATE_USER_BEGIN})
+            try {
+                const {data} = await autoFetch.patch('/auth/updateUser',currentUser);
+                const {user,location,token} = data
+                
+              dispatch({type : UPDATE_USER_SUCCESS,payload :{user,location,token}});
+              addUserToLocalStorage({user,location,token})
+
+            } catch (error) {
+                if(error.response.status !== 401){
+                    dispatch({type :UPDATE_USER_ERROR, payload :{msg : error.response.data.msg}})
+                }
+                 
+                }
+            clearAlert()
     }
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
         ,loginUser, 
         toggleSideBar,
-        logoutUser
+        logoutUser,
+        updateUser 
     }}>{children}</AppContext.Provider>
 
 }
