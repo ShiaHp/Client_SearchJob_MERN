@@ -20,7 +20,11 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     GET_JOBS_BEGIN ,
     GET_JOBS_SUCCESS,
     GET_JOBS_ERROR,
-    SET_EDIT_JOB
+    SET_EDIT_JOB,
+    DELETE_JOB_BEGIN,
+    EDIT_JOB_BEGIN,
+    EDIT_JOB_SUCCESS,
+    EDIT_JOB_ERROR
 } from './action';
 import axios from 'axios'
 
@@ -232,14 +236,30 @@ const AppProvider = ({children}) =>{
             }})
         }
 
-        const editJob = () =>{
-            console.log('Edit job')
+        const editJob = async () =>{
+           dispatch({type : EDIT_JOB_BEGIN})
+           try {
+                const {position,company,jobLocation,jobType,status} = state;
+                await autoFetch.patch(`/jobs/${state.editJobId}`,{
+                    position,company,jobLocation,jobType,status
+                })
+                dispatch({type : EDIT_JOB_SUCCESS})
+                dispatch({type :CLEAR_VALUE})
+           } catch (error) {
+               if(error.response.status ===401) return
+            dispatch({type :   EDIT_JOB_ERROR , payload : {msg : error.response.data.msg}})
+           }
         }
-        const setDeleteJob = (id) =>{
-            console.log(`set Delete Job ${id}`);
-            
+        
+        const deleteJob = async (idJob) =>{
+            dispatch({type :DELETE_JOB_BEGIN})
+            try {
+                await autoFetch.delete(`/jobs/${idJob}`)
+                getJobs()
+            } catch (error) {
+                console.log(error.message)
+            }
         }
-
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -251,9 +271,10 @@ const AppProvider = ({children}) =>{
         clearValues ,
         createJob,
         getJobs,
-        setDeleteJob,
+
         setEditJob,
-        editJob 
+        editJob ,
+        deleteJob
     }}>{children}</AppContext.Provider>
 
 }
