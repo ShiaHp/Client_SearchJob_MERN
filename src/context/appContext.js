@@ -19,7 +19,8 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     CREATE_JOB_ERROR,
     GET_JOBS_BEGIN ,
     GET_JOBS_SUCCESS,
-    GET_JOBS_ERROR
+    GET_JOBS_ERROR,
+    SET_EDIT_JOB
 } from './action';
 import axios from 'axios'
 
@@ -226,8 +227,13 @@ const AppProvider = ({children}) =>{
         }
 
         const setEditJob = (id) =>{
-            console.log(`set edit job ${id}`);
+            dispatch({type : SET_EDIT_JOB , payload  :{
+                id
+            }})
+        }
 
+        const editJob = () =>{
+            console.log('Edit job')
         }
         const setDeleteJob = (id) =>{
             console.log(`set Delete Job ${id}`);
@@ -246,7 +252,8 @@ const AppProvider = ({children}) =>{
         createJob,
         getJobs,
         setDeleteJob,
-        setEditJob
+        setEditJob,
+        editJob 
     }}>{children}</AppContext.Provider>
 
 }

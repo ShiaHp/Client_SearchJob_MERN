@@ -18,6 +18,7 @@
     CREATE_JOB_ERROR,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
+    SET_EDIT_JOB
 
 
 } from './action';
@@ -170,6 +171,23 @@ if (action.type === GET_JOBS_BEGIN) {
       totalJobs: action.payload.totalJobs,
       numOfPages: action.payload.numOfPages,
     }
+  }
+
+  if(action.type === SET_EDIT_JOB){
+      const job = state.jobs.find(job => job._id === action.payload.id);
+      console.log(job)
+      const {_id,position,company,jobLocation,jobType,status } = job 
+      return{
+          ...state,
+          isEditing : true,
+          editJobId : _id,
+          position,
+          company,
+          jobLocation,
+          jobType,
+          status
+
+      }
   }
         throw new Error(`so suck action : ${action.type} `)
         

@@ -17,7 +17,8 @@ const AddJob = () => {
     statusOptions,
     handleChange,
     clearValues,
-    createJob
+    createJob,
+    editJob 
   } = useAppContext()
 
 
@@ -36,7 +37,7 @@ const AddJob = () => {
       return
     }
     if(isEditing){
-      // eventually editJob()
+      editJob()
       return
     }
     createJob()

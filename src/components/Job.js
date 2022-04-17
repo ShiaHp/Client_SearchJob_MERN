@@ -7,6 +7,7 @@ import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/Job'
 
 const Job = ({_id,position,jobLocation,status,jobType,company,createdAt}) => {
+ 
   const {setEditJob , setDeleteJob} = useAppContext();
 
   let date = moment(createdAt);
@@ -32,7 +33,7 @@ const Job = ({_id,position,jobLocation,status,jobType,company,createdAt}) => {
 
         <footer>
           <div className="actions">
-            <Link to="/add-job" className="btn edit-btn">
+            <Link to="/add-job" className="btn edit-btn" onClick={()=>setEditJob(_id)}>
               Edit
             </Link>
             <button type="button" className="btn delete-btn" onClick={() => setDeleteJob(_id)}>
