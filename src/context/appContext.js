@@ -16,7 +16,10 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     CLEAR_VALUE,
     CREATE_JOB_BEGIN ,
     CREATE_JOB_SUCCESS,
-    CREATE_JOB_ERROR
+    CREATE_JOB_ERROR,
+    GET_JOBS_BEGIN ,
+    GET_JOBS_SUCCESS,
+    GET_JOBS_ERROR
 } from './action';
 import axios from 'axios'
 
@@ -30,8 +33,6 @@ const initialState = {
     showAlert : false,
     alertText :'',
     alertType :'',
-    user : null,
-    token : null,
     userLocation : userLocation || '',
     user : user? JSON.parse(user) : null,
     token : token,
@@ -44,7 +45,12 @@ const initialState = {
     jobTypeOptions : ['full-time','part-time','remote','internship'],
     jobType : 'full-time',
     statusOptions :['interview','declined','pending'] ,
-    status : 'pending'
+    status : 'pending',
+
+    jobs : [],
+    totalJobs : 0,
+    page :  1,
+    numOfPages : 1,
 
 
 }
@@ -103,7 +109,7 @@ const AppProvider = ({children}) =>{
         localStorage.removeItem('token');
         localStorage.removeItem('location');
     }
-const registerUser = async (currentUser)=>{
+    const registerUser = async (currentUser)=>{
     dispatch({type : REGISTER_USER_BEGIN})
     try{
         const response = await axios.post('/api/v1/auth/register',currentUser);
@@ -149,15 +155,15 @@ const registerUser = async (currentUser)=>{
     }
     clearAlert()
     }
-const toggleSideBar =() =>{
+    const toggleSideBar =() =>{
     dispatch({type :  TOGGLE_SIDEBAR })
 }
 
-const logoutUser = () =>{
+    const logoutUser = () =>{
         dispatch({type :     LOGOUT_USER    });
         removeUserFromLocalStorage();
     }   
-const updateUser = async (currentUser) =>{
+    const updateUser = async (currentUser) =>{
 
         dispatch({type : UPDATE_USER_BEGIN})
             try {
@@ -204,6 +210,30 @@ const updateUser = async (currentUser) =>{
         }
         clearAlert()
     }
+
+        const getJobs = async () =>{
+            let url = `/jobs`;
+            dispatch({type :GET_JOBS_BEGIN})
+            try {
+                const {data} = await autoFetch(url);
+                const {jobs,totalJobs,numOfPages} = data;
+                dispatch({type :GET_JOBS_SUCCESS, payload : {jobs,totalJobs, numOfPages}})
+            } catch (error) {
+                 console.log(error);
+                logoutUser()
+            }
+                clearAlert()
+        }
+
+        const setEditJob = (id) =>{
+            console.log(`set edit job ${id}`);
+
+        }
+        const setDeleteJob = (id) =>{
+            console.log(`set Delete Job ${id}`);
+            
+        }
+
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -213,7 +243,10 @@ const updateUser = async (currentUser) =>{
         updateUser ,
         handleChange,
         clearValues ,
-        createJob
+        createJob,
+        getJobs,
+        setDeleteJob,
+        setEditJob
     }}>{children}</AppContext.Provider>
 
 }
