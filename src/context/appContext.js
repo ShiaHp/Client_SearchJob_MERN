@@ -24,7 +24,10 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     DELETE_JOB_BEGIN,
     EDIT_JOB_BEGIN,
     EDIT_JOB_SUCCESS,
-    EDIT_JOB_ERROR
+    EDIT_JOB_ERROR,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
+    SHOW_STATS_ERROR
 } from './action';
 import axios from 'axios'
 
@@ -56,7 +59,8 @@ const initialState = {
     totalJobs : 0,
     page :  1,
     numOfPages : 1,
-
+    stats : {},
+    monthlyApplication : []
 
 }
 
@@ -260,6 +264,19 @@ const AppProvider = ({children}) =>{
                 console.log(error.message)
             }
         }
+
+        const showStats = async () => {
+            dispatch({type : SHOW_STATS_BEGIN});
+            try {
+                const {data} = await autoFetch('/jobs/stats');
+                dispatch({type :SHOW_STATS_SUCCESS , payload :{
+                    stats : data.defaultStats,
+                    monthlyApplication : data.monthlyApplication
+                }})
+            } catch (error) {
+                dispatch({type :SHOW_STATS_ERROR, payload :{ msg: error.response.data.msg}})
+            }
+        }
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -271,7 +288,7 @@ const AppProvider = ({children}) =>{
         clearValues ,
         createJob,
         getJobs,
-
+        showStats,
         setEditJob,
         editJob ,
         deleteJob
