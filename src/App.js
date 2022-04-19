@@ -1,6 +1,6 @@
 
 import {BrowserRouter,Routes,Route} from "react-router-dom";
-import {Dashboard,Register,Landing,Error,ProtectedRoute} from "./pages/index"
+import {Dashboard,Register,Landing,Error,ProtectedRoute,Reset,Forgot} from "./pages/index"
 import { 
   AddJob,
   Profile,
@@ -23,7 +23,9 @@ function App() {
       <Route path="all-jobs" element={< AllJobs/>} />
     </Route>
     <Route path="/register" element={<Register/>} />
+    <Route path="/forgot" element={<Forgot/>} />
     <Route path="/landing" element={ <Landing/>} />
+    <Route path="/reset/:token" element={ <Reset/>} />
     <Route path="*" element={<Error/>} />
    
     </Routes>

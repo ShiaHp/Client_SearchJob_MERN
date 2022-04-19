@@ -28,7 +28,12 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     SHOW_STATS_SUCCESS,
     SHOW_STATS_ERROR,
     CLEAR_FILTERS ,
-    CHANGE_PAGE
+    CHANGE_PAGE,
+    RESET_USER_BEGIN,
+    RESET_USER_SUCCESS,
+    FORGOT_PASSWORD_BEGIN ,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_ERROR
 } from './action';
 import axios from 'axios'
 
@@ -124,6 +129,7 @@ const AppProvider = ({children}) =>{
         localStorage.removeItem('token');
         localStorage.removeItem('location');
     }
+
     const registerUser = async (currentUser)=>{
     dispatch({type : REGISTER_USER_BEGIN})
     try{
@@ -160,9 +166,7 @@ const AppProvider = ({children}) =>{
             user,token,location 
         }})
         addUserToLocalStorage({user,token,location})
-        // local storage
     } catch(e){
-     
         dispatch({type : LOGIN_USER_ERROR , payload : {
             msg : e.response.data.msg 
         }})
@@ -170,9 +174,45 @@ const AppProvider = ({children}) =>{
     }
     clearAlert()
     }
+    const forgotPassword = async (currentUser) =>{
+        dispatch({ type:  FORGOT_PASSWORD_BEGIN })
+        try {
+            const {data} = await autoFetch.post('/auth/forgotPassword',currentUser);
+            const {message } = data
+            dispatch({ type: FORGOT_PASSWORD_SUCCESS ,
+                payload :{
+                message 
+            }})
+        } catch (error) {
+                console.log(error)
+                dispatch({ type: FORGOT_PASSWORD_ERROR , payload: { msg : error.response.data.msg}})
+        }
+        clearAlert()
+    }
     const toggleSideBar =() =>{
     dispatch({type :  TOGGLE_SIDEBAR })
-}
+}   
+    const resetPass = async (params,Info) =>{
+  
+
+
+      
+            dispatch({type : RESET_USER_BEGIN})
+            try {
+                const {data} = await axios.post(`/api/v1/auth/resetPassword/${params}`,Info);
+    
+                const {password,passwordConfirm} = data
+                dispatch({type : RESET_USER_SUCCESS,
+                     payload : {
+                        password,passwordConfirm
+                }})
+            } catch (error) {
+                console.log(error)
+                if(error.response.status !== 401){
+                    dispatch({type :REGISTER_USER_ERROR, payload :{msg : error.response.data.msg}})
+                }
+            }
+     }
 
     const logoutUser = () =>{
         dispatch({type :     LOGOUT_USER    });
@@ -297,6 +337,8 @@ const AppProvider = ({children}) =>{
                 
             dispatch({ type: CHANGE_PAGE, payload: { page } })
         }
+
+       
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -313,7 +355,10 @@ const AppProvider = ({children}) =>{
         editJob ,
         deleteJob,
         changePage,
-        clearFilters
+        clearFilters,
+        resetPass,
+        forgotPassword
+        
     }}>{children}</AppContext.Provider>
 
 }

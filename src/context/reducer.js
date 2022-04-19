@@ -26,7 +26,13 @@
     SHOW_STATS_SUCCESS,
     SHOW_STATS_ERROR,
     CLEAR_FILTERS ,
-    CHANGE_PAGE
+    CHANGE_PAGE,
+    RESET_USER_BEGIN,
+    RESET_USER_SUCCESS,
+    RESET_USER_ERROR,
+    FORGOT_PASSWORD_BEGIN ,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_ERROR
 
 
 } from './action';
@@ -84,6 +90,33 @@
                 alertType : 'danger'
                 ,alertText : action.payload.msg}
         }
+        if(action.type === FORGOT_PASSWORD_BEGIN){
+            return { ...state,
+          isLoading : true,
+          }
+        }
+        if(action.type === FORGOT_PASSWORD_SUCCESS){
+            return { ...state,
+              isLoading : false,
+              showAlert : true,
+              alertType : 'success',
+              alertText : action.payload.message
+          }
+        }
+        if(action.type === FORGOT_PASSWORD_ERROR){
+            return { ...state,
+          isLoading : false,
+          showAlert : true,
+          alertType : 'danger',
+          alertText : action.payload.msg
+      
+          }
+        }
+
+
+
+
+
         if(action.type === TOGGLE_SIDEBAR){
             return {
                 ...state,
@@ -263,6 +296,19 @@ if(action.type === CLEAR_FILTERS ){
 if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page }
   }
+
+  if(action.type === RESET_USER_BEGIN){
+      return { ...state, isLoading : true}
+  }
+  if(action.type === RESET_USER_SUCCESS){
+      return { ...state, 
+        showAlert : true,
+        alertType : 'success'
+        ,alertText : 'Successfully reset user'
+    }
+  }
+ 
+  
         throw new Error(`so suck action : ${action.type} `)
         
     }

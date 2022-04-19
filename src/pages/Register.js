@@ -9,6 +9,7 @@ const initialState ={
   name: '',
   email: '',
   password: '',
+  passwordConfirm : '',
   isMember: true,
 }
 const Register = () => {
@@ -29,12 +30,12 @@ const Register = () => {
   
   const onSubmit = (e) => {
     e.preventDefault();
-    const {name,email,password,isMember} = values;
+    const {name,email,password,isMember,  passwordConfirm } = values;
     if(!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    const currentUser = {name,email,password};
+    const currentUser = {name,email,password ,    passwordConfirm };
 
     if(isMember) {
       loginUser(currentUser);
@@ -56,7 +57,7 @@ const Register = () => {
   // mỗi lần user hoặc navigate thay đổi
   return (
     <Wrapper className="full-page">
-      <form className="form"onSubmit={onSubmit} >
+      <form className="form" onSubmit={onSubmit} >
         <img src={logo} alt="logo" width={300} height={100} />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
         {showAlert && <Alert/>}
@@ -84,14 +85,24 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
+          <FormRow
+          type='password'
+          name='passwordConfirm'
+          value={values.passwordConfirm}
+          handleChange={handleChange}
+        />
+      
         <button type='submit' className='btn btn-block' disabled={isLoading}>
           submit
         </button>
    <p>
-          {values.isMember ? "Not a member yet?" : "Already a member?"}
+          {values.isMember ? "Not a member yet?"  : "Already a member?"}
      <button type="button" onClick={toggleMember} className="member-btn">
-          {values.isMember ? 'Register' : 'Login'}
-
+          {values.isMember ? 'Register' : 'Login' } 
+    
+     </button>
+     <button type="button"  className="member-btn">
+           'Forgot your password ?'  
      </button>
    </p>
       </form>
