@@ -19,7 +19,6 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     CREATE_JOB_ERROR,
     GET_JOBS_BEGIN ,
     GET_JOBS_SUCCESS,
-    GET_JOBS_ERROR,
     SET_EDIT_JOB,
     DELETE_JOB_BEGIN,
     EDIT_JOB_BEGIN,
@@ -27,7 +26,9 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     EDIT_JOB_ERROR,
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
-    SHOW_STATS_ERROR
+    SHOW_STATS_ERROR,
+    CLEAR_FILTERS ,
+    CHANGE_PAGE
 } from './action';
 import axios from 'axios'
 
@@ -61,7 +62,12 @@ const initialState = {
     numOfPages : 1,
     stats : {},
     monthlyApplication : []
-
+    ,
+    search : '',
+    searchStatus : 'all',
+    searchType : 'all',
+    sort : 'latest',
+    sortOptions  :['latest','oldest','a-z','z-a']
 }
 
 const AppContext = React.createContext();
@@ -221,7 +227,14 @@ const AppProvider = ({children}) =>{
     }
 
         const getJobs = async () =>{
-            let url = `/jobs`;
+
+            const {search,searchStatus,searchType,sort,page} = state;
+            console.log(page)
+            let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+
+            if(search){
+                url = url + `&search=${search}`
+            }
             dispatch({type :GET_JOBS_BEGIN})
             try {
                 const {data} = await autoFetch(url);
@@ -277,6 +290,13 @@ const AppProvider = ({children}) =>{
                 dispatch({type :SHOW_STATS_ERROR, payload :{ msg: error.response.data.msg}})
             }
         }
+        const clearFilters= () => {
+           dispatch({type :CLEAR_FILTERS})
+        }
+        const changePage = (page) => {
+                
+            dispatch({ type: CHANGE_PAGE, payload: { page } })
+        }
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -291,7 +311,9 @@ const AppProvider = ({children}) =>{
         showStats,
         setEditJob,
         editJob ,
-        deleteJob
+        deleteJob,
+        changePage,
+        clearFilters
     }}>{children}</AppContext.Provider>
 
 }

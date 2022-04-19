@@ -23,7 +23,7 @@ export const UPDATE_USER_SUCCESS = 'UPDATE-USER-SUCCESS';
 export const UPDATE_USER_ERROR = 'UPDATE-USER-ERROR';
 
 
-export const HANDLE_CHANGE = 'HANDLE_CHANGE ';
+
 
 export const CLEAR_VALUE = 'CLEAR_VALUE ';
 
@@ -52,3 +52,11 @@ export const DELETE_JOB_BEGIN = 'DELETE_JOB_BEGIN ';
 export const SHOW_STATS_BEGIN = 'SHOW_STATS_BEGIN ';
 export const SHOW_STATS_SUCCESS = 'SHOW_STATS_SUCCESS ';
 export const SHOW_STATS_ERROR = 'SHOW_STATS_ERROR ';
+
+
+export const HANDLE_CHANGE = 'HANDLE_CHANGE'
+
+export const CLEAR_FILTERS = 'CLEAR_FILTERS'
+
+
+export const CHANGE_PAGE = 'CHANGE_PAGE'

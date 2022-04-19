@@ -11,7 +11,7 @@ const BigSidebar = () => {
       <div className={showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'}>
         <div className='content'>
           <header>
-            <img src={logo} alt="logo"/>
+            <img src={logo} style={{marginTop: "30px"}} height={80} width={100} alt="logo"/>
           </header>
           <NavLinks toggleSideBar={toggleSideBar}/>
         </div>

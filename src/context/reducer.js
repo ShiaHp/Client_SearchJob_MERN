@@ -22,10 +22,11 @@
     DELETE_JOB_BEGIN,
     EDIT_JOB_BEGIN,
     EDIT_JOB_SUCCESS,
-    EDIT_JOB_ERROR,
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
-    SHOW_STATS_ERROR
+    SHOW_STATS_ERROR,
+    CLEAR_FILTERS ,
+    CHANGE_PAGE
 
 
 } from './action';
@@ -250,7 +251,18 @@ if(action.type === SHOW_STATS_ERROR){
         alertText : action.payload.msg
     }
 }
+if(action.type === CLEAR_FILTERS ){
+    return {...state,
+    search :'',
+    searchStatus : '',
+    searchType : '',
+    sort : 'latest',
+    }
+}
 
+if (action.type === CHANGE_PAGE) {
+    return { ...state, page: action.payload.page }
+  }
         throw new Error(`so suck action : ${action.type} `)
         
     }

@@ -10,7 +10,7 @@ const Landing = () => {
       <Wrapper>
       <main>
         <nav>
-            <img src={logo} alt="logo"  className="logo"/>
+            <img src={logo} height={200} width={200}  style={{margin : '50px'}} alt="logo"  className="logo"/>
     </nav>
     <div className="container page">
         {/* info */}
