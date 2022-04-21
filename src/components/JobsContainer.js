@@ -4,7 +4,13 @@ import Loading from './Loading'
 import Job from './Job'
 import Wrapper from '../assets/wrappers/JobsContainer'
 import PageBtnContainer from './PageBtnContainer'
-
+import {
+  FormattedMessage,
+  FormattedDate,
+  FormattedNumber,
+  FormattedPlural, 
+  FormattedTime
+} from 'react-intl';
 const JobsContainer = () => {
   const {
     getJobs,
@@ -29,7 +35,7 @@ const JobsContainer = () => {
   if (jobs.length === 0) {
     return (
       <Wrapper>
-        <h2>No jobs to display...</h2>
+        <h2>< FormattedMessage id="display"/></h2>
       </Wrapper>
     )
   }
@@ -37,7 +43,7 @@ const JobsContainer = () => {
   return (
     <Wrapper>
       <h5>
-        {totalJobs} job{jobs.length > 1 && 's'} found
+        {totalJobs} <FormattedMessage id="job-found"/>
       </h5>
       <div className='jobs'>
         {jobs.map((job) => {

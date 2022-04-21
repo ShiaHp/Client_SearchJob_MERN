@@ -8,7 +8,7 @@ import {AppProvider} from './context/appContext'
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-    <App />
+      <App date = {Date.now()} />
     </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')

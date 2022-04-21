@@ -2,7 +2,13 @@ import React from 'react'
 import {useAppContext} from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
 import {Alert,FormRow,FormRowSelect} from '../../components'
-
+import {
+  FormattedMessage,
+  FormattedDate,
+  FormattedNumber,
+  FormattedPlural, 
+  FormattedTime
+} from 'react-intl';
 const AddJob = () => {
   const {
     isEditing,
@@ -45,22 +51,25 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? 'edit job'  : 'add job'}</h3>
+        <h3>{isEditing ? <FormattedMessage id="Edit"/>  : <FormattedMessage id="Add Job"/> }</h3>
         {showAlert && <Alert />}
         <div className="form-center"> 
           {/* position */}
-          <FormRow type='text' name="position" value={position} handleChange={handleJobInput}  />
+          <FormRow type='text' labelText={ <FormattedMessage
+          id = "position"
+          defaultMessage="Interviews Scheduled"
+        />} name="position" value={position} handleChange={handleJobInput}  />
           {/* Company */}
-          <FormRow type='text' name="company" value={company} handleChange={handleJobInput}  />
+          <FormRow type='text'  labelText={ <FormattedMessage id="company" defaultMessage="Company"/>}   name="company" value={company} handleChange={handleJobInput}  />
           {/* Location */}
-          <FormRow type='text' name="jobLocation" value={jobLocation} handleChange={handleJobInput}  />
+          <FormRow type='text' labelText={<FormattedMessage id="jobL" />} name="jobLocation" value={jobLocation} handleChange={handleJobInput}  />
 
       {/* job types */}
 
-    <FormRowSelect name="status"  value={status} handleChange={handleJobInput} 
+    <FormRowSelect name="status"  labelText={<FormattedMessage id="Status"/>} value={status} handleChange={handleJobInput} 
     list={statusOptions}
     />
-     <FormRowSelect name="jobTypes" labelText="Types"  value={jobTypeOptions} handleChange={handleJobInput} 
+     <FormRowSelect name="jobTypes" labelText={<FormattedMessage id="Type"/>}  value={jobTypeOptions} handleChange={handleJobInput} 
     list={jobTypeOptions}
     />
 
@@ -69,12 +78,12 @@ const AddJob = () => {
       <button type="submit" className="btn btn-block submit-btn"
        onClick={handleSubmit}
   
-       >Submit</button>
+       ><FormattedMessage id="Submit"/></button>
        <button className="btn btn-block clear-btn" onClick={(e)=>{
          e.preventDefault();
          clearValues()
        
-       }}>Clear</button>
+       }}><FormattedMessage id="Clear"/></button>
       </div>
         </div>
       </form>

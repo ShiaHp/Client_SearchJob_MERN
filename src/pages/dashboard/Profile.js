@@ -2,7 +2,13 @@ import React , {useState} from 'react'
 import {FormRow,Alert} from '../../components';
 import { useAppContext } from '../../context/appContext';
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
-
+import {
+  FormattedMessage,
+  FormattedDate,
+  FormattedNumber,
+  FormattedPlural, 
+  FormattedTime
+} from 'react-intl';
 const Profile = () => {
   const {user,showAlert,displayAlert,updateUser,isLoading} = useAppContext();
 
@@ -29,12 +35,12 @@ const Profile = () => {
         <h3>Profile</h3>
         {showAlert && <Alert/>}
         <div className="form-center">
-          <FormRow type="text" name="name" value={name} handleChange={(e)=>setName(e.target.value)}/>
-          <FormRow type="text" labelText="Last Name" name="lastName" value={lastName} handleChange={(e)=>setLastName(e.target.value)}/>
-          <FormRow type="email" name="email" value={email} handleChange={(e)=>setEmail(e.target.value)}/>
-          <FormRow type="location" name="location" value={location} handleChange={(e)=>setLocation(e.target.value)}/>
+          <FormRow type="text"  labelText={<FormattedMessage id="name"/>} name="name" value={name} handleChange={(e)=>setName(e.target.value)}/>
+          <FormRow type="text"  labelText={<FormattedMessage id="lastName"/>} name="lastName" value={lastName} handleChange={(e)=>setLastName(e.target.value)}/>
+          <FormRow type="email"  name="email" value={email} handleChange={(e)=>setEmail(e.target.value)}/>
+          <FormRow type="location" labelText={<FormattedMessage id="location"/>}  name="location" value={location} handleChange={(e)=>setLocation(e.target.value)}/>
           <button className="btn btn-block" type="submit" disabled={isLoading}>
-            {isLoading?'Please wait ...'  :" Save Change"}
+            {isLoading? <FormattedMessage id="wait" />  :<FormattedMessage id="save" />}
           </button>
         </div>
       </form>

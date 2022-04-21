@@ -1,5 +1,6 @@
 import React, {useState,useEffect,useContext,useReducer} from 'react';
 import reducer from './reducer';
+import {IntlProvider} from 'react-intl';
 import { DISPLAY_ALERT , CLEAR_ALERT , 
     REGISTER_USER_BEGIN,
     REGISTER_USER_SUCCESS,
@@ -33,14 +34,28 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     RESET_USER_SUCCESS,
     FORGOT_PASSWORD_BEGIN ,
     FORGOT_PASSWORD_SUCCESS,
-    FORGOT_PASSWORD_ERROR
+    FORGOT_PASSWORD_ERROR,
+    CHANGE_LANG ,
+    CHANGE_MESSAGE
 } from './action';
 import axios from 'axios'
-
+import English from '../lang/en.json'
+import Vietnamese from '../lang/vi.json'
 // có thể dùng trong trường hợp user reload lại page thì có thể load lại info
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const userLocation = localStorage.getItem('location');
+
+const local = navigator.language;
+
+
+let lang;
+
+if (local === 'vi-VN' || local === 'vi') {
+    lang = Vietnamese; 
+}else if ( local === 'en') {
+    lang = English
+}
 
 const initialState = {
     isLoading: false,
@@ -60,27 +75,31 @@ const initialState = {
     jobType : 'full-time',
     statusOptions :['interview','declined','pending'] ,
     status : 'pending',
-
     jobs : [],
     totalJobs : 0,
     page :  1,
     numOfPages : 1,
     stats : {},
-    monthlyApplication : []
-    ,
+    monthlyApplication : [],
     search : '',
     searchStatus : 'all',
     searchType : 'all',
     sort : 'latest',
-    sortOptions  :['latest','oldest','a-z','z-a']
+    sortOptions  :['latest','oldest','a-z','z-a'],
+    local : local || '',
+    messages : lang || ''
 }
+
+
+
 
 const AppContext = React.createContext();
 
 
 const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,initialState)
-    // test 
+
+ 
 
 
 //    axios
@@ -105,6 +124,20 @@ const AppProvider = ({children}) =>{
         }
         return Promise.reject(err)
     })
+
+
+    
+    const changeLanguage = (local) => {
+        dispatch({ type: CHANGE_LANG , payload: { local}})
+    }
+
+    const changeMessage = (newMessages) => {
+        console.log(newMessages)
+        dispatch({ type: CHANGE_MESSAGE, payload: {newMessages}})
+    }
+
+
+
 
     const displayAlert = ()=>{
         dispatch({type : DISPLAY_ALERT})
@@ -193,14 +226,9 @@ const AppProvider = ({children}) =>{
     dispatch({type :  TOGGLE_SIDEBAR })
 }   
     const resetPass = async (params,Info) =>{
-  
-
-
-      
             dispatch({type : RESET_USER_BEGIN})
             try {
                 const {data} = await axios.post(`/api/v1/auth/resetPassword/${params}`,Info);
-    
                 const {password,passwordConfirm} = data
                 dispatch({type : RESET_USER_SUCCESS,
                      payload : {
@@ -334,11 +362,11 @@ const AppProvider = ({children}) =>{
            dispatch({type :CLEAR_FILTERS})
         }
         const changePage = (page) => {
-                
             dispatch({ type: CHANGE_PAGE, payload: { page } })
         }
 
        
+        
     return <AppContext.Provider value={{...state
         ,displayAlert,
         registerUser
@@ -357,9 +385,12 @@ const AppProvider = ({children}) =>{
         changePage,
         clearFilters,
         resetPass,
-        forgotPassword
+        forgotPassword,
+        changeLanguage ,
+        changeMessage
         
-    }}>{children}</AppContext.Provider>
+    }}>
+ <IntlProvider messages ={state.messages} locale = {state.local}>{children}</IntlProvider> </AppContext.Provider>
 
 }
 

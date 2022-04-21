@@ -2,6 +2,13 @@ import React from 'react'
 import {FormRow,FormRowSelect} from '.';
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/SearchContainer'
+import {
+  FormattedMessage,
+  FormattedDate,
+  FormattedNumber,
+  FormattedPlural, 
+  FormattedTime
+} from 'react-intl';
 const SearchContainer = () => {
 
 const {
@@ -29,23 +36,23 @@ const handleSearch = (event) => {
   return (
     <Wrapper>
     <form className="form">
-      <h4> Search Form</h4>
+      <h4> <FormattedMessage id="Search-form" /></h4>
       <div className="form-center">
         {/* Search position */}
-      <FormRow type="text" name="search" value={search} handleChange={handleSearch} />
+      <FormRow type="text" labelText={<FormattedMessage id="Search"/>} name="search" value={search} handleChange={handleSearch} />
 
 
-      <FormRowSelect labelText='status' name="searchStatus" value={searchStatus} 
+      <FormRowSelect labelText={<FormattedMessage id="Status"/>} name="searchStatus" value={searchStatus} 
       handleChange={handleSearch} list={['all',...statusOptions]}
       />
 
   <FormRowSelect labelText='type' name="searchType" value={searchType} 
       handleChange={handleSearch} list={['all',...jobTypeOptions]}
       />
-  <FormRowSelect  name="sort" value={sort} 
+  <FormRowSelect labelText={<FormattedMessage id="Sort" />}  name="sort" value={sort} 
       handleChange={handleSearch} list={sortOptions}
       />
-      <button className="btn btn-block btn-danger" disabled={isLoading} onClick={handleSubmit}>Submit</button>
+      <button className="btn btn-block btn-danger" disabled={isLoading} onClick={handleSubmit}><FormattedMessage id="Submit"/></button>
       </div>
     </form>
     </Wrapper>

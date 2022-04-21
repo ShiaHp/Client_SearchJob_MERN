@@ -32,7 +32,9 @@
     RESET_USER_ERROR,
     FORGOT_PASSWORD_BEGIN ,
     FORGOT_PASSWORD_SUCCESS,
-    FORGOT_PASSWORD_ERROR
+    FORGOT_PASSWORD_ERROR,
+    CHANGE_LANG,
+    CHANGE_MESSAGE
 
 
 } from './action';
@@ -307,8 +309,13 @@ if (action.type === CHANGE_PAGE) {
         ,alertText : 'Successfully reset user'
     }
   }
- 
+ if(action.type === CHANGE_LANG){
+     return { ...state, local : action.payload.local}
+ }
   
+ if(action.type === CHANGE_MESSAGE){
+     return { ...state, messages : action.payload.newMessages}
+ }
         throw new Error(`so suck action : ${action.type} `)
         
     }

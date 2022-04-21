@@ -35,7 +35,7 @@ const Register = () => {
       displayAlert();
       return;
     }
-    const currentUser = {name,email,password ,    passwordConfirm };
+    const currentUser = {name,email,password , passwordConfirm };
 
     if(isMember) {
       loginUser(currentUser);
