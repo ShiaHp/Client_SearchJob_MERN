@@ -18,10 +18,12 @@
     "react-dom": "^18.0.0",
     "react-i18next": "^11.16.7",
     "react-icons": "^4.3.1",
+    "react-image-lightbox": "^5.1.4",
     "react-intl": "^5.25.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
     "recharts": "^2.1.9",
+    "sass": "^1.52.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
@@ -49,5 +51,4 @@
       "last 1 safari version"
     ]
   }
-
 }

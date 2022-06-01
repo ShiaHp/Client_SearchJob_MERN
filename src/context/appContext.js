@@ -66,7 +66,7 @@ const initialState = {
     alertText :'',
     alertType :'',
     userLocation : userLocation || '',
-    user : user? JSON.parse(user) : null,
+    user : user? user : null,
     token : token,
     showSidebar : false,
     isEditing : false,
@@ -112,6 +112,7 @@ const AppProvider = ({children}) =>{
     // request 
     autoFetch.interceptors.request.use((config)=>{
         config.headers.common['Authorization'] =`Bearer ${state.token}`;
+       
         return config
     },(err)=>{
         return Promise.reject(err)
@@ -268,12 +269,16 @@ const AppProvider = ({children}) =>{
         removeUserFromLocalStorage();
     }   
     const updateUser = async (currentUser) =>{
-
+     
+       const {id,formData} = currentUser;
+    
         dispatch({type : UPDATE_USER_BEGIN})
             try {
-                const {data} = await autoFetch.patch('/auth/updateUser',currentUser);
-                const {user,location,token} = data
-                
+           const {data} = await axios.patch(`/api/v1/auth/updateUser/${id}`,formData,{
+            headers: { "Content-Type": "multipart/form-data" }
+           })
+                const {updateUser,location,token} = data
+               const user = updateUser;
               dispatch({type : UPDATE_USER_SUCCESS,payload :{user,location,token}});
               addUserToLocalStorage({user,location,token})
 
