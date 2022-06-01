@@ -1,6 +1,6 @@
 
 import {BrowserRouter,Routes,Route} from "react-router-dom";
-import {Dashboard,Register,Landing,Error,ProtectedRoute,Reset,Forgot,Test } from "./pages/index"
+import {Dashboard,Register,Landing,Error,ProtectedRoute,Reset,Forgot,Test ,Gmail} from "./pages/index"
 import { 
   AddJob,
   Profile,
@@ -26,8 +26,8 @@ function App() {
     <Route path="/register" element={<Register/>} />
     <Route path="/forgot" element={<Forgot/>} />
     <Route path="/landing" element={ <Landing/>} />
-    <Route path="/test" element={ <Test/>} />
     <Route path="/reset/:token" element={ <Reset/>} />
+    <Route path="/gmail" element={ <Gmail/>} />
    
     <Route path="*" element={<Error/>} />
    

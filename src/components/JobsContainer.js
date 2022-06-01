@@ -5,11 +5,7 @@ import Job from './Job'
 import Wrapper from '../assets/wrappers/JobsContainer'
 import PageBtnContainer from './PageBtnContainer'
 import {
-  FormattedMessage,
-  FormattedDate,
-  FormattedNumber,
-  FormattedPlural, 
-  FormattedTime
+  FormattedMessage
 } from 'react-intl';
 const JobsContainer = () => {
   const {

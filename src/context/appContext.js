@@ -36,7 +36,10 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_ERROR,
     CHANGE_LANG ,
-    CHANGE_MESSAGE
+    CHANGE_MESSAGE,
+    LOGIN_GOOGLE_BEGIN,
+    LOGIN_GOOGLE_START,
+    LOGIN_GOOGLE_ERROR
 } from './action';
 import axios from 'axios'
 import English from '../lang/en.json'
@@ -167,10 +170,10 @@ const AppProvider = ({children}) =>{
     dispatch({type : REGISTER_USER_BEGIN})
     try{
         const response = await axios.post('/api/v1/auth/register',currentUser);
-        console.log(response);
+        
         const { user,token} = response.data
         const location = response.data.user.location;
-        console.log(location)
+      
         dispatch({type : REGISTER_USER_SUCCESS,
              payload : {
             user,token,location 
@@ -207,6 +210,24 @@ const AppProvider = ({children}) =>{
     }
     clearAlert()
     }
+
+
+    const loginWithGoogle = async(currentUser) =>{
+        dispatch({type : LOGIN_GOOGLE_BEGIN})
+        try {
+            const {data} = await axios.post('/api/v1/auth/loginWithGoogle',currentUser)
+            const { user,token,location} = data
+            dispatch({type : LOGIN_GOOGLE_START,
+                payload : {
+               user,token,location 
+           }})
+            addUserToLocalStorage({user,token,location})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     const forgotPassword = async (currentUser) =>{
         dispatch({ type:  FORGOT_PASSWORD_BEGIN })
         try {
@@ -387,7 +408,8 @@ const AppProvider = ({children}) =>{
         resetPass,
         forgotPassword,
         changeLanguage ,
-        changeMessage
+        changeMessage,
+        loginWithGoogle
         
     }}>
  <IntlProvider messages ={state.messages} locale = {state.local}>{children}</IntlProvider> </AppContext.Provider>

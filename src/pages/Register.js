@@ -15,8 +15,23 @@ const initialState ={
 const Register = () => {
   const navigate = useNavigate()
   const [values,setValues] = useState(initialState);
-  const {user,isLoading,showAlert, displayAlert,registerUser,loginUser} = useAppContext();
-  // global state 
+  const [trueButton,setTrueButton] = useState(false)
+  // const [userFb,setUserFb] = useState('');
+
+  const [authenticated,setAuthenticated] = useState(false);
+  // const [error,setError] = useState('');
+
+    // global state 
+  const {user,isLoading,showAlert, displayAlert,registerUser,loginUser,loginWithGoogle} = useAppContext();
+
+
+  
+
+
+
+
+
+
 
 
   const toggleMember = () =>{
@@ -44,7 +59,11 @@ const Register = () => {
     }
     
   }
-  
+ const buttonLoginWithGoogle = (ev) => {
+    ev.preventDefault();
+    window.open("http://localhost:2828/auth/google", "_self");
+
+ }
 
   useEffect(() =>{
     if(user){
@@ -101,8 +120,11 @@ const Register = () => {
           {values.isMember ? 'Register' : 'Login' } 
     
      </button>
-     <button type="button"  className="member-btn">
+     <button type="button"  className="member-btn" onClick={() => navigate('/forgot')}>
            'Forgot your password ?'  
+     </button>
+     <button type="button"  className="member-btn" onClick={buttonLoginWithGoogle}>
+           'Login with Gmail'
      </button>
    </p>
       </form>

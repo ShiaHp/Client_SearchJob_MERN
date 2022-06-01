@@ -34,7 +34,9 @@
     FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_ERROR,
     CHANGE_LANG,
-    CHANGE_MESSAGE
+    CHANGE_MESSAGE,
+    LOGIN_GOOGLE_BEGIN,
+    LOGIN_GOOGLE_START,
 
 
 } from './action';
@@ -68,7 +70,7 @@
                 showAlert : true,alertType : 'danger'
                 ,alertText : action.payload.msg}
         }
-
+   
 
         if(action.type === LOGIN_USER_BEGIN){
             return {...state,isLoading : true}
@@ -85,6 +87,22 @@
                 alertText: 'User Login Successfully ! Redirecting to ...'
             }
         }
+        if(action.type === LOGIN_GOOGLE_BEGIN){
+            return {...state,isLoading : true}
+        }
+        if(action.type === LOGIN_GOOGLE_START){
+            return {...state,
+                isLoading : false,
+                token : action.payload.token,
+                user : action.payload.user,
+                userLocation : action.payload.location,
+                jobLocation : action.payload.location,
+                showAlert : true,
+                alertType : 'success',
+                alertText: 'User Login Successfully ! Redirecting to ...'
+            }
+        }
+
         if(action.type === LOGIN_USER_ERROR){
             return {...state,
                 isLoading : false,

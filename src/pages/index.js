@@ -6,8 +6,8 @@ import ProtectedRoute from "./ProtectedRoute"
 import Reset from "./Reset"
 import Forgot from "./Forgot"
 import Test from "./Test"
-
+import Gmail from './Gmail'
 export {
     Dashboard,Landing,Register,Error,
-    ProtectedRoute,Reset,Forgot,Test 
+    ProtectedRoute,Reset,Forgot,Test ,Gmail
 }
