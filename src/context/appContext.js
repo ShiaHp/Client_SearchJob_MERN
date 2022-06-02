@@ -1,6 +1,7 @@
 import React, {useState,useEffect,useContext,useReducer} from 'react';
 import reducer from './reducer';
 import {IntlProvider} from 'react-intl';
+import jwt_decode from "jwt-decode";
 import { DISPLAY_ALERT , CLEAR_ALERT , 
     REGISTER_USER_BEGIN,
     REGISTER_USER_SUCCESS,
@@ -39,11 +40,14 @@ import { DISPLAY_ALERT , CLEAR_ALERT ,
     CHANGE_MESSAGE,
     LOGIN_GOOGLE_BEGIN,
     LOGIN_GOOGLE_START,
-    LOGIN_GOOGLE_ERROR
+    GET_USERS_BEGIN ,
+    GET_USERS_SUCCESS,
+    DELETE_USER_BEGIN
 } from './action';
 import axios from 'axios'
 import English from '../lang/en.json'
 import Vietnamese from '../lang/vi.json'
+
 // có thể dùng trong trường hợp user reload lại page thì có thể load lại info
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -83,6 +87,9 @@ const initialState = {
     page :  1,
     numOfPages : 1,
     stats : {},
+    users: [],
+    isAdmin:'',
+    totalUsers: '',
     monthlyApplication : [],
     search : '',
     searchStatus : 'all',
@@ -197,10 +204,12 @@ const AppProvider = ({children}) =>{
         const {data} = await axios.post('/api/v1/auth/login',currentUser);
         
         const { user,token,location} = data
-   
+        const decode = jwt_decode(token);
+        const {isAdmin} = decode;
+       
         dispatch({type : LOGIN_USER_SUCCESS,
              payload : {
-            user,token,location 
+            user,token,location,isAdmin
         }})
         addUserToLocalStorage({user,token,location})
     } catch(e){
@@ -319,6 +328,26 @@ const AppProvider = ({children}) =>{
         }
         clearAlert()
     }
+    const getUsers = async () =>{
+        const {search,page,isAdmin} = state;
+
+       
+        let url = `/users/getAllUsers/`
+
+        if(search){
+            url = url + `&search=${search}`
+            
+        }
+        dispatch({type : GET_USERS_BEGIN})
+        try {
+            const {data} = await autoFetch(url);
+            const {users,totalUsers,numOfPages,token} = data;
+  
+            dispatch({type : GET_USERS_SUCCESS, payload :{users,totalUsers,numOfPages}})
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
         const getJobs = async () =>{
 
@@ -390,7 +419,15 @@ const AppProvider = ({children}) =>{
         const changePage = (page) => {
             dispatch({ type: CHANGE_PAGE, payload: { page } })
         }
-
+        const deleteUser = async (id) => {
+            dispatch({ type: DELETE_USER_BEGIN})
+            try {
+                await autoFetch.delete(`/users/deleteUser/${id}`);
+                getUsers()
+            } catch (error) {
+                console.log(error)
+            }
+        }
        
         
     return <AppContext.Provider value={{...state
@@ -414,7 +451,10 @@ const AppProvider = ({children}) =>{
         forgotPassword,
         changeLanguage ,
         changeMessage,
-        loginWithGoogle
+        loginWithGoogle,
+        getUsers,
+        deleteUser
+        
         
     }}>
  <IntlProvider messages ={state.messages} locale = {state.local}>{children}</IntlProvider> </AppContext.Provider>

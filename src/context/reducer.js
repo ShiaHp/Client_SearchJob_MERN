@@ -29,7 +29,6 @@
     CHANGE_PAGE,
     RESET_USER_BEGIN,
     RESET_USER_SUCCESS,
-    RESET_USER_ERROR,
     FORGOT_PASSWORD_BEGIN ,
     FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_ERROR,
@@ -37,6 +36,9 @@
     CHANGE_MESSAGE,
     LOGIN_GOOGLE_BEGIN,
     LOGIN_GOOGLE_START,
+    GET_USERS_BEGIN ,
+    GET_USERS_SUCCESS,
+    DELETE_USER_BEGIN
 
 
 } from './action';
@@ -71,7 +73,9 @@
                 ,alertText : action.payload.msg}
         }
    
-
+        if(action.type === DELETE_USER_BEGIN){
+            return {...state,isLoading: true}
+        }
         if(action.type === LOGIN_USER_BEGIN){
             return {...state,isLoading : true}
         }
@@ -82,6 +86,7 @@
                 user : action.payload.user,
                 userLocation : action.payload.location,
                 jobLocation : action.payload.location,
+                isAdmin : action.payload.isAdmin,
                 showAlert : true,
                 alertType : 'success',
                 alertText: 'User Login Successfully ! Redirecting to ...'
@@ -233,7 +238,18 @@ if (action.type === GET_JOBS_BEGIN) {
       numOfPages: action.payload.numOfPages,
     }
   }
-
+if(action.type === GET_USERS_BEGIN){
+    return { ...state, isLoading: true, showAlert: false }
+}
+if (action.type === GET_USERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      users: action.payload.users,
+      totalUsers: action.payload.totalUsers,
+      numOfPages: action.payload.numOfPages,
+    }
+  }
   if(action.type === SET_EDIT_JOB){
       const job = state.jobs.find(job => job._id === action.payload.id);
       console.log(job)

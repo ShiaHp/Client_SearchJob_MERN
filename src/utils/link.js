@@ -15,7 +15,7 @@ const links = [
     {id : 1,text : < FormattedMessage id="Status" />,path : '/' , icon :<IoBarChartSharp/>},
     {id : 2,text :  < FormattedMessage id="All" />,path : 'all-jobs' , icon :<MdQueryStats/>},
     {id : 3,text :  < FormattedMessage id="Add" />,path : 'add-job' , icon :<FaWpforms/>},
-    {id : 4,text : < FormattedMessage id="Profile" />,path : 'profile' , icon :<ImProfile/>}
+    {id : 4,text : < FormattedMessage id="Profile" />,path : 'profile' , icon :<ImProfile/>},
     
 ]
 

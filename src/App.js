@@ -6,9 +6,12 @@ import {
   Profile,
   Stats,
   SharedLayout,
-  AllJobs  } from './pages/dashboard/index'
-
+  AllJobs, Users  } from './pages/dashboard/index'
+  import { useAppContext } from './context/appContext';
+import { useEffect } from "react";
 function App() {
+
+
   return (
     <BrowserRouter>
     <Routes>
@@ -22,6 +25,9 @@ function App() {
       <Route path="add-job" element={<AddJob/>} />
       <Route path="profile" element={<Profile/>} />
       <Route path="all-jobs" element={< AllJobs/>} />
+       <Route path="add-users" element={< Users/>}/>
+    
+    
     </Route>
     <Route path="/register" element={<Register/>} />
     <Route path="/forgot" element={<Forgot/>} />

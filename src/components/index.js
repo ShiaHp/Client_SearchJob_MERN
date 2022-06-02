@@ -12,9 +12,10 @@ import ChartsContainer from "./ChartsContainer"
 import Loading from "./Loading"
 import DropdownLanguage from "./DropdownLanguage"
 import Change from "./Change"
+import UsersContainer from "./UsersContainer"
 export {logo,
     FormRow,Alert,Navbar,BigSidebar,SmallSidebar
     ,FormRowSelect,SearchContainer, 
-    JobsContainer,ChartsContainer ,StatsContainer,Loading,DropdownLanguage,Change
+    JobsContainer,ChartsContainer ,StatsContainer,Loading,DropdownLanguage,Change,UsersContainer
 
 }
