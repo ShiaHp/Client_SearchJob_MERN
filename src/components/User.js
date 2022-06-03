@@ -6,7 +6,7 @@ import JobInfo from './JobInfo'
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/Job'
 
-const User = ({_id,name,lastName,email,isAdmin}) => {
+const User = ({_id,name,lastName,email,isAdmin,avatar}) => {
  
   const {deleteUser} = useAppContext();
 
@@ -15,6 +15,7 @@ const User = ({_id,name,lastName,email,isAdmin}) => {
       <header>
       {/* <div className="main-icon">{name}</div> */}
       <div className="info">
+        <img src={avatar} alt="avatar" style={{width: '20%', height: '20%'}} />
           <h5>{name}</h5> {lastName}
           <p>{email}</p>
 

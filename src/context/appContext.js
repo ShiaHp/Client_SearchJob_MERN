@@ -334,6 +334,7 @@ const AppProvider = ({children}) =>{
        
         let url = `/users/getAllUsers/`
 
+     
         if(search){
             url = url + `&search=${search}`
             
@@ -342,7 +343,9 @@ const AppProvider = ({children}) =>{
         try {
             const {data} = await autoFetch(url);
             const {users,totalUsers,numOfPages,token} = data;
-  
+        
+         
+           
             dispatch({type : GET_USERS_SUCCESS, payload :{users,totalUsers,numOfPages}})
         } catch (error) {
             console.log(error);

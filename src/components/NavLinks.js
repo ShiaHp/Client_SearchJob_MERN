@@ -36,7 +36,7 @@ const NavLinks = ({ toggleSidebar }) => {
               isActive ? 'nav-link active' : 'nav-link'
             }
           >
-            <span className='icon'><FaWpforms/></span>Add User</NavLink> }
+            <span className='icon'><FaWpforms/></span>Manage Users</NavLink> }
      
     </div>
   )
